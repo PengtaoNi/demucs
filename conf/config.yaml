@@ -38,7 +38,7 @@ test:
   nonhq:   # path to non hq MusDB for evaluation
 
 epochs: 360
-batch_size: 64
+batch_size: 2
 max_batches:  # limit the number of batches per epoch, useful for debugging
               # or if your dataset is gigantic.
 optim:
@@ -55,7 +55,7 @@ debug: false
 valid_apply: true
 flag:
 save_every:
-weights: [1., 1., 1., 1.]  # weights over each source for the training/valid loss.
+weights: [1., 1., 1., 1., 1., 1., 1., 1., 1.]  # weights over each source for the training/valid loss.
 
 augment:
   shift_same: false
@@ -64,7 +64,7 @@ augment:
     max_tempo: 12
   remix:
     proba: 1
-    group_size: 4
+    group_size: 2
   scale:
     proba: 1
     min: 0.25

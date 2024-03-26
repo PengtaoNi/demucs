@@ -268,7 +268,7 @@ def get_musdb_dataset(part='train'):
 def get_wav_dataset():
     root = Path(EXTRA_WAV_PATH)
     ext = '.wav'
-    metadata = _build_metadata(root, SOURCES, ext=ext, normalize=False)
+    metadata = build_metadata(root, SOURCES, ext=ext, normalize=False)
     train_set = Wavset(
         root, metadata, SOURCES, samplerate=SR, channels=CHANNELS,
         normalize=False, ext=ext)
@@ -286,18 +286,20 @@ def main():
     (OUTPATH / 'valid').mkdir(exist_ok=True, parents=True)
     out = OUTPATH / 'train'
 
-    dset = get_musdb_dataset()
-    # dset2 = get_wav_dataset()
+    # dset = get_musdb_dataset()
+    dset2 = get_wav_dataset()
     # dset3 = get_musdb_dataset('test')
-    dset2 = None
+    # dset2 = None
+    dset = None
     dset3 = None
     pendings = []
     copies = 6
     copies_rej = 2
 
     with ProcessPoolExecutor(20) as pool:
-        for index in range(len(dset)):
-            pendings.append(pool.submit(analyse_track, dset, index))
+        if dset:
+            for index in range(len(dset)):
+                pendings.append(pool.submit(analyse_track, dset, index))
 
         if dset2:
             for index in range(len(dset2)):
