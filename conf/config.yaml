@@ -8,10 +8,10 @@ defaults:
 
 dummy:
 dset:
-  musdb: /checkpoint/defossez/datasets/musdbhq
+  musdb: # /checkpoint/defossez/datasets/musdbhq
   musdb_samplerate: 44100
-  use_musdb: true   # set to false to not use musdb as training data.
-  wav:  # path to custom wav dataset
+  use_musdb: false   # set to false to not use musdb as training data.
+  wav: /content/demucs/submixed_dset # path to custom wav dataset
   wav2:  # second custom wav dataset
   segment: 11
   shift: 1
@@ -21,7 +21,7 @@ dset:
   channels: 2
   normalize: true
   metadata: ./metadata
-  sources: ['drums', 'bass', 'other', 'vocals']
+  sources: ['bass', 'drums', 'guitar', 'organ', 'other', 'percussion', 'piano', 'strings', 'woodwind']
   valid_samples: # valid dataset size
   backend: null   # if provided select torchaudio backend.
 

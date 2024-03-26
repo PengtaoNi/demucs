@@ -95,7 +95,7 @@ def build_metadata(path, sources, normalize=True, ext=EXT):
     with ThreadPoolExecutor(8) as pool:
         for root, folders, files in os.walk(path, followlinks=True):
             root = Path(root)
-            if root.name.startswith('.') or folders or root == path:
+            if root.name.startswith('.') or root == path:
                 continue
             name = str(root.relative_to(path))
             pendings.append((name, pool.submit(_track_metadata, root, sources, normalize, ext)))
@@ -192,11 +192,12 @@ def get_wav_datasets(args, name='wav'):
     metadata_file = Path(args.metadata) / ('wav_' + sig + ".json")
     train_path = Path(path) / "train"
     valid_path = Path(path) / "valid"
-    if not metadata_file.is_file() and distrib.rank == 0:
-        metadata_file.parent.mkdir(exist_ok=True, parents=True)
-        train = build_metadata(train_path, args.sources)
-        valid = build_metadata(valid_path, args.sources)
-        json.dump([train, valid], open(metadata_file, "w"))
+    # if not metadata_file.is_file() and distrib.rank == 0:
+    metadata_file.parent.mkdir(exist_ok=True, parents=True)
+    train = build_metadata(train_path, args.sources)
+    valid = build_metadata(valid_path, args.sources)
+    json.dump([train, valid], open(metadata_file, "w"))
+
     if distrib.world_size > 1:
         distributed.barrier()
     train, valid = json.load(open(metadata_file))
